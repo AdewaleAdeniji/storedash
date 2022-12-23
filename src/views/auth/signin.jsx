@@ -57,7 +57,7 @@ function SignIn() {
             color={textColorSecondary}
             fontWeight='400'
             fontSize='md'>
-            Enter your email and password to sign in to Phalconwise
+            Enter your email and password to sign in.
           </Text>
         </Box>
         <Flex
