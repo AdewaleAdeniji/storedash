@@ -40,15 +40,6 @@ export const validateUser = (flag) => {
     }
 }
 
-export const containsBadWord = (str) => {
-    const badwords = ['pdp','apc','terror','bomb','gun','hack','steal','kill','kidnap','rape','death','murder','fraud','yahoo','curse','jesus','politics','arson','weapons','breast','yansh','islamaphobia','election','police','federal','state','senate','phalcon','flutter','phalconwise','paystack','kuda','gtbank','kudi','ole','cult','aye','eiye','greenberet','skeleton','havoc','corrupt','stupid','fool','user','username','pitobi','stupid','wisephalcon','feranmiphalconwise'];
-    filter.add(badwords);
-    return filter.check(str);
-}
-export const TransferFee = (amount) => {
-    const fee = amount<=1000?0:amount<5000?20:amount<=15000?50:100;
-    return fee;
-}
 export const goToURL = (props,url) => {
     return props.history.push(url);
 }
