@@ -1,0 +1,17 @@
+.bars {
+    display: flex;
+    height: 3px;
+    width: 100%;
+    justify-content: space-around;
+  }
+  
+  .bars .bar {
+    width: 23%;
+    transition: 0.5s;
+    height: 3px;
+    background: #dadada;
+  }
+  
+  .bars .bar.good {
+    background: green;
+  }
