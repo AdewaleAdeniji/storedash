@@ -32,7 +32,7 @@ ReactDOM.render(
       newestOnTop={true}
       autoClose={8000}
       closeOnClick={true}
-      position="bottom-center"
+      position="top-center"
     />
   </ChakraProvider>
   </Provider>,

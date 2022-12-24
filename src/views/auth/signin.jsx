@@ -1,4 +1,4 @@
-import React from "react";
+import React,{ useState } from "react";
 import { NavLink } from "react-router-dom";
 // Chakra imports
 import {
@@ -22,17 +22,44 @@ import DefaultAuth from "layouts/auth/Default";
 import illustration from "assets/phal/phal.png";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { RiEyeCloseLine } from "react-icons/ri";
+import { axios, validator, toast, configs, Cache } from "utils/imports";
 
-function SignIn() {
+function SignIn(props) {
   // Chakra color mode
   const textColor = useColorModeValue("navy.700", "white");
   const textColorSecondary = "gray.400";
-  const textColorDetails = useColorModeValue("navy.700", "secondaryGray.600");
-  const textColorBrand = useColorModeValue("brand.500", "white");
   const brandStars = useColorModeValue("brand.500", "brand.400");
 
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
+
+  const [email, setEmail] = useState("codeooilandgas@gmail.com");
+  const [password, setPassword] = useState("c0de@oilandgas");
+
+  const signin = async () => {
+    if(!validator.isEmail(email)){
+      return toast.error('Invalid Email address');
+    }
+    const payload = {
+      email,
+      password
+    }
+    toast.loading('Signing in..');
+    try {
+    const login = await axios.post(
+      `${configs.api_url}/login/`,
+      payload
+    );
+    toast.dismiss();
+    Cache.saveUser(login.data);
+    props.history.push('/app/dashboard');
+    }
+    catch(err){
+      toast.dismiss();
+      toast.error(err?.response?.data?.message||'Incorrect Email or Password');
+    }
+  }
+
   return (
     <DefaultAuth illustrationBackground={illustration} image={illustration}>
       <Flex
@@ -57,7 +84,7 @@ function SignIn() {
             color={textColorSecondary}
             fontWeight='400'
             fontSize='md'>
-            Enter your email and password to sign in to Phalconwise
+            Enter your email and password to sign in.
           </Text>
         </Box>
         <Flex
@@ -90,10 +117,12 @@ function SignIn() {
               fontSize='sm'
               ms={{ base: "0px", md: "0px" }}
               type='email'
+              value={email}
               placeholder='mail@store.com'
               mb='24px'
               fontWeight='500'
               size='lg'
+              onChange={(e) => setEmail(e.target.value)}
             />
             <FormLabel
               ms='4px'
@@ -109,9 +138,11 @@ function SignIn() {
                 fontSize='sm'
                 placeholder='Min. 8 characters'
                 mb='24px'
+                value={password}
                 size='lg'
                 type={show ? "text" : "password"}
                 variant='auth'
+                onChange={(e)=> setPassword(e.target.value)}
               />
               <InputRightElement display='flex' alignItems='center' mt='4px'>
                 <Icon
@@ -140,7 +171,9 @@ function SignIn() {
               fontWeight='500'
               w='100%'
               h='50'
-              mb='24px'>
+              mb='24px'
+              onClick={signin}
+              >
               Sign In
             </Button>
           </FormControl>

@@ -5,30 +5,41 @@ import {
   Box,
   Button,
   Flex,
-  Link,
   Text,
   useColorModeValue,
   SimpleGrid,
+  Skeleton,
+  Spinner,
 } from "@chakra-ui/react";
 
-import NFT from "components/card/NFT";
-
-// Assets
-import Nft1 from "assets/img/nfts/Nft1.png";
-import Nft2 from "assets/img/nfts/Nft2.png";
-import Nft3 from "assets/img/nfts/Nft3.png";
-import Nft4 from "assets/img/nfts/Nft4.png";
-import Nft5 from "assets/img/nfts/Nft5.png";
-import Nft6 from "assets/img/nfts/Nft6.png";
-import Avatar1 from "assets/img/avatars/avatar1.png";
-import Avatar2 from "assets/img/avatars/avatar2.png";
-import Avatar3 from "assets/img/avatars/avatar3.png";
-import Avatar4 from "assets/img/avatars/avatar4.png";
+import Product from "components/card/Product";
+import { axios, toast, configs,Cache } from "utils/imports";
+import { useEffect, useState } from "react";
 
 export default function Products() {
   // Chakra Color Mode
   const textColor = useColorModeValue("secondaryGray.900", "white");
-  const textColorBrand = useColorModeValue("brand.500", "white");
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+   async function fetchorders(param){
+    const config = {
+      headers: { Authorization: `Bearer ${Cache.getToken()}` }
+  };
+  toast.dismiss();
+  setProducts([]);
+  setLoading(true);
+  const prods = await axios.get(`${configs.api_url}/commerce/products?_sort=createdAt:-1${param?param:''}`, config)
+  setLoading(false);
+  console.log(prods.data);
+  setProducts(prods.data);
+    if(prods.data.length === 0){
+      toast.warning('No orders with the selected category');
+    }
+  }
+  useEffect(()=>{
+    fetchorders();
+  }, [])
   return (
     <Box pt={{ base: "180px", md: "80px", xl: "80px" }}>
         <Flex
@@ -54,58 +65,15 @@ export default function Products() {
                   </Button>
               </Flex>
             </Flex>
+            {loading &&  <Skeleton isLoaded={!loading} height="500px"><Spinner /></Skeleton>}
             <SimpleGrid columns={{ base: 1, md: 3 }} gap='20px'>
-              <NFT
-                name='Abstract Colors'
-                author='By Esthera Jackson'
-                bidders={[
-                  Avatar1,
-                  Avatar2,
-                  Avatar3,
-                  Avatar4,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                ]}
-                image={Nft1}
-                currentbid='0.91 ETH'
-                download='#'
-              />
-              <NFT
-                name='ETH AI Brain'
-                author='By Nick Wilson'
-                bidders={[
-                  Avatar1,
-                  Avatar2,
-                  Avatar3,
-                  Avatar4,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                ]}
-                image={Nft2}
-                currentbid='0.91 ETH'
-                download='#'
-              />
-              <NFT
-                name='Mesh Gradients '
-                author='By Will Smith'
-                bidders={[
-                  Avatar1,
-                  Avatar2,
-                  Avatar3,
-                  Avatar4,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                ]}
-                image={Nft3}
-                currentbid='0.91 ETH'
-                download='#'
-              />
+              {
+                products.map((product) =>{
+                  return (
+                    <Product {...product}/>
+                  )
+                })
+              }
             </SimpleGrid>
           </Flex>
         </Flex>

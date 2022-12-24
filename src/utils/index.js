@@ -3,15 +3,20 @@ import copy from 'copy-to-clipboard';
 import { toast } from 'react-toastify';
 import filter from 'leo-profanity';
 import banks from './banks.json';
+import moment from 'moment';
 
-const currencies = ['₦']
+export const currencies = ['₦']
 
 export const currency = {
     get: function(id){
         return <React.Fragment> {currencies[id] || currencies[0] }</React.Fragment>;
     }
 }
-
+export const splitCamelCaseToString = (s) => {
+  return s.split(/(?=[A-Z])/).map(function(p) {
+      return p.charAt(0).toUpperCase() + p.slice(1);
+  }).join(' ');
+}
 export const validateUser = (flag) => {
     // var url = '';
     if(flag.suspended){
@@ -39,21 +44,19 @@ export const validateUser = (flag) => {
         return false;
     }
 }
-
-export const containsBadWord = (str) => {
-    const badwords = ['pdp','apc','terror','bomb','gun','hack','steal','kill','kidnap','rape','death','murder','fraud','yahoo','curse','jesus','politics','arson','weapons','breast','yansh','islamaphobia','election','police','federal','state','senate','phalcon','flutter','phalconwise','paystack','kuda','gtbank','kudi','ole','cult','aye','eiye','greenberet','skeleton','havoc','corrupt','stupid','fool','user','username','pitobi','stupid','wisephalcon','feranmiphalconwise'];
-    filter.add(badwords);
-    return filter.check(str);
-}
-export const TransferFee = (amount) => {
-    const fee = amount<=1000?0:amount<5000?20:amount<=15000?50:100;
-    return fee;
+export const mapToArray = (obj) => {
+  return Object.keys(obj).map((key) => [(key), obj[key]]);
 }
 export const goToURL = (props,url) => {
     return props.history.push(url);
 }
 export const getBanks = () => {
     return banks;
+}
+export const formatDate = (date) => {
+  return moment(date).format(
+    "MMMM Do YYYY, h:mm:ss a"
+  )
 }
 export const removeNonLetters = (str) => {
 const regex = /[^A-Za-z ]/g;

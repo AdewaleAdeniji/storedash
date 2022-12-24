@@ -3,7 +3,7 @@ import { Box, Grid } from "@chakra-ui/react";
 // Custom components
 import Banner from "views/app/profile/components/Banner";
 // import Settings from "views/app/profile/components/Settings";
-import Upload from "views/app/profile/components/Upload";
+
 
 // Assets
 import banner from "assets/img/auth/banner.png";
