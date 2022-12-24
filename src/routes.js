@@ -35,7 +35,7 @@ const routes = [
     icon: <Icon as={MdHome} width='20px' height='20px' color='inherit' />,
     component: AppDashboard,
     navbar: true,
-    protected: false,
+    protected: true,
   },
   {
     name: "Orders",

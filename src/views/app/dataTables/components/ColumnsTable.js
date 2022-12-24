@@ -44,7 +44,7 @@ export default function ColumnsTable(props) {
     prepareRow,
     initialState,
   } = tableInstance;
-  initialState.pageSize = 5;
+  initialState.pageSize = 200;
 
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
@@ -101,7 +101,7 @@ export default function ColumnsTable(props) {
                         </Text>
                       </Flex>
                     );
-                  } else if (cell.column.Header === "PROGRESS") {
+                  } else if (cell.column.Header === "DESCRIPTION") {
                     data = (
                       <Flex align='center'>
                         <Text
@@ -113,7 +113,34 @@ export default function ColumnsTable(props) {
                         </Text>
                       </Flex>
                     );
-                  } else if (cell.column.Header === "QUANTITY") {
+                  }
+                  else if (cell.column.Header === "PRICE") {
+                    data = (
+                      <Flex align='center'>
+                        <Text
+                          me='10px'
+                          color={textColor}
+                          fontSize='sm'
+                          fontWeight='700'>
+                          {cell.value}%
+                        </Text>
+                      </Flex>
+                    );
+                  }
+                  else if (cell.column.Header === "DESCRIPTION") {
+                    data = (
+                      <Flex align='center'>
+                        <Text
+                          me='10px'
+                          color={textColor}
+                          fontSize='sm'
+                          fontWeight='700'>
+                          {cell.value}%
+                        </Text>
+                      </Flex>
+                    );
+                  }
+                   else if (cell.column.Header === "QUANTITY") {
                     data = (
                       <Text color={textColor} fontSize='sm' fontWeight='700'>
                         {cell.value}
@@ -125,6 +152,15 @@ export default function ColumnsTable(props) {
                         {cell.value}
                       </Text>
                     );
+                  }
+                  else {
+                      data = (
+                        <Flex align='center'>
+                          <Text color={textColor} fontSize='sm' fontWeight='700'>
+                            {cell.value} jl;jougiyuty
+                          </Text>
+                        </Flex>
+                      );
                   }
                   return (
                     <Td

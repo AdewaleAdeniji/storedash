@@ -7,6 +7,7 @@ import Sidebar from "components/sidebar/Sidebar.js";
 import { SidebarContext } from "contexts/SidebarContext";
 import React, { useState } from "react";
 import { Route, Switch } from "react-router-dom";
+import Cache from "utils/cache.js";
 import routes, { navRoutes } from "../../routes.js";
 
 // Custom Chakra theme
@@ -91,9 +92,9 @@ export default function Dashboard(props) {
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
       if (prop.layout === "/admin" || prop.layout === "/app" ) {
-        // if(!Cache.get('authT')){
-        //   return window.location.href = '/auth/login';
-        // }
+        if(!Cache.getUser()){
+          return window.location.href = '/auth/sign-in';
+        }
         return (
           <Route
             path={prop.layout + prop.path}

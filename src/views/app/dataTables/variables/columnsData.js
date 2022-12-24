@@ -42,18 +42,60 @@ export const columnsDataColumns = [
     accessor: "name",
   },
   {
-    Header: "PROGRESS",
-    accessor: "progress",
+    Header: "Description",
+    accessor: "description",
+  },
+  {
+    Header: "QUANTITY",
+    accessor: "createdAt",
+  },
+  {
+    Header: "Price",
+    accessor: "price",
+  },
+  {
+    Header: "Payment Status",
+    accessor: "paymentStatus",
+  },
+  {
+    Header: "Order Status",
+    accessor: "status",
+  },
+  {
+    Header: "Date",
+    accessor: "date"
+  }
+];
+export const orderTableColumns = [
+  {
+    Header: "NAME",
+    accessor: "name",
+  },
+  {
+    Header: "DESCRIPTION",
+    accessor: "description",
   },
   {
     Header: "QUANTITY",
     accessor: "quantity",
   },
   {
-    Header: "DATE",
-    accessor: "date",
+    Header: "PRICE",
+    accessor: "price",
   },
-];
+  {
+    Header: "Payment Status",
+    accessor: "paymentStatus",
+  },
+  {
+    Header: "Order Status",
+    accessor: "status",
+  },
+  {
+    Header: "Date",
+    accessor: "createdAt"
+  }
+]
 
 export const columnsDataComplex = [
   {

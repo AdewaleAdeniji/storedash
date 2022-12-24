@@ -43,7 +43,7 @@ import {
       prepareRow,
       initialState,
     } = tableInstance;
-    initialState.pageSize = 5;
+    initialState.pageSize = 200;
   
     const textColor = useColorModeValue("secondaryGray.900", "white");
     const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
@@ -124,6 +124,15 @@ import {
                         </Text>
                       );
                     }
+                    else {
+                      data = (
+                        <Flex align='center'>
+                          <Text color={textColor} fontSize='sm' fontWeight='700'>
+                            {cell.value}
+                          </Text>
+                        </Flex>
+                      );
+                  }
                     return (
                       <Td
                         {...cell.getCellProps()}
