@@ -4,14 +4,17 @@ import {
     SimpleGrid,
     Text,
     useColorModeValue,
+    Button,
+    Flex,
   } from "@chakra-ui/react";
   import Card from "components/card/Card.js";
   import React from "react";
+import { Link } from "react-router-dom";
 import { mapToArray } from "utils";
   import Information from "views/app/profile/components/Information";
   
   export default function ProductBanner(props) {
-    const { name, images, description } = props;
+    const { name, images, description, productID } = props;
     // Chakra Color Mode
     const textColorPrimary = useColorModeValue("secondaryGray.900", "white");
     const textColorSecondary = "gray.400";
@@ -33,6 +36,7 @@ import { mapToArray } from "utils";
     console.log(prod);
     return (
       <Card mb={{ base: "0px", lg: "20px" }} align="center">
+                
         <SimpleGrid
           columns={{ base: 1, md: 3 }}
           gap="5px"
@@ -71,6 +75,12 @@ import { mapToArray } from "utils";
                 })
         }
         </SimpleGrid>
+
+        <Flex justifyContent='right' mt={'20px'}>
+            <Link to={{ pathname: `/app/edit/product/${productID}`, query: props }}>
+                <Button colorScheme={'brand'}>Edit Product</Button>
+            </Link>
+        </Flex>
       </Card>
     );
   }
