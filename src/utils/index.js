@@ -3,15 +3,20 @@ import copy from 'copy-to-clipboard';
 import { toast } from 'react-toastify';
 import filter from 'leo-profanity';
 import banks from './banks.json';
+import moment from 'moment';
 
-const currencies = ['₦']
+export const currencies = ['₦']
 
 export const currency = {
     get: function(id){
         return <React.Fragment> {currencies[id] || currencies[0] }</React.Fragment>;
     }
 }
-
+export const splitCamelCaseToString = (s) => {
+  return s.split(/(?=[A-Z])/).map(function(p) {
+      return p.charAt(0).toUpperCase() + p.slice(1);
+  }).join(' ');
+}
 export const validateUser = (flag) => {
     // var url = '';
     if(flag.suspended){
@@ -39,12 +44,19 @@ export const validateUser = (flag) => {
         return false;
     }
 }
-
+export const mapToArray = (obj) => {
+  return Object.keys(obj).map((key) => [(key), obj[key]]);
+}
 export const goToURL = (props,url) => {
     return props.history.push(url);
 }
 export const getBanks = () => {
     return banks;
+}
+export const formatDate = (date) => {
+  return moment(date).format(
+    "MMMM Do YYYY, h:mm:ss a"
+  )
 }
 export const removeNonLetters = (str) => {
 const regex = /[^A-Za-z ]/g;

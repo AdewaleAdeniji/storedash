@@ -3,32 +3,45 @@ import React from "react";
 // Chakra imports
 import {
   Box,
-  Button,
   Flex,
   Link,
   Text,
   useColorModeValue,
   SimpleGrid,
+  Skeleton,
+  Spinner,
 } from "@chakra-ui/react";
-
-import NFT from "components/card/NFT";
-
-// Assets
-import Nft1 from "assets/img/nfts/Nft1.png";
-import Nft2 from "assets/img/nfts/Nft2.png";
-import Nft3 from "assets/img/nfts/Nft3.png";
-import Nft4 from "assets/img/nfts/Nft4.png";
-import Nft5 from "assets/img/nfts/Nft5.png";
-import Nft6 from "assets/img/nfts/Nft6.png";
-import Avatar1 from "assets/img/avatars/avatar1.png";
-import Avatar2 from "assets/img/avatars/avatar2.png";
-import Avatar3 from "assets/img/avatars/avatar3.png";
-import Avatar4 from "assets/img/avatars/avatar4.png";
+import Order from "components/card/Order";
+import { axios, toast, configs,Cache } from "utils/imports";
+import { useEffect, useState } from "react";
 
 export default function Orders() {
   // Chakra Color Mode
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const textColorBrand = useColorModeValue("brand.500", "white");
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+   async function fetchorders(param){
+    const config = {
+      headers: { Authorization: `Bearer ${Cache.getToken()}` }
+  };
+  toast.dismiss();
+  setOrders([]);
+  setLoading(true);
+  const orders = await axios.get(`${configs.api_url}/commerce/orderItems?_sort=createdAt:-1${param?param:''}`, config)
+  setLoading(false);
+  setOrders(orders.data);
+    if(orders.data.length === 0){
+      toast.warning('No orders with the selected category');
+    }
+  }
+  useEffect(()=>{
+    fetchorders();
+  }, [])
+  const handleFilter = (param) => {
+    return fetchorders(`&status=${param.toUpperCase()}`);
+  }
   return (
     <Box pt={{ base: "180px", md: "80px", xl: "80px" }}>
         <Flex
@@ -49,102 +62,64 @@ export default function Orders() {
                 me='20px'
                 ms={{ base: "24px", md: "0px" }}
                 mt={{ base: "20px", md: "0px" }}>
-                  <Link to="/feranmi">Feranmi</Link>
-                <Link
+                  <Link
                   color={textColorBrand}
                   fontWeight='500'
                   me={{ base: "34px", md: "44px" }}
-                  to='/feranmi'>
-                  SUCCESSFUL
+                  >Filters:</Link>
+                <Link
+                  color={textColorBrand}
+                  fontWeight='500'
+                  mr={'10px'}
+                  me={{ base: "34px", md: "44px" }}
+                  onClick={()=> handleFilter("completed")}>
+                  COMPLETED
                 </Link>
                 <Link
                   color={textColorBrand}
                   fontWeight='500'
                   me={{ base: "34px", md: "44px" }}
-                  to='#music'>
-                  PENDING
+                  onClick={()=> handleFilter("processing")}>
+                  PROCESSING
                 </Link>
                 <Link
                   color={textColorBrand}
                   fontWeight='500'
                   me={{ base: "34px", md: "44px" }}
-                  to='?filter=canceled'>
+                  onClick={()=> handleFilter("incomplete")}>
+                  INCOMPLETE
+                </Link>
+                <Link
+                  color={textColorBrand}
+                  fontWeight='500'
+                  me={{ base: "34px", md: "44px" }}
+                  onClick={()=> handleFilter("cancelled")}>
                   CANCELLED
                 </Link>
-                <Link color={textColorBrand} fontWeight='500' to='#sports'>
-                  Sports
+                <Link
+                  color={textColorBrand}
+                  fontWeight='500'
+                  me={{ base: "34px", md: "44px" }}
+                  onClick={()=> handleFilter("failed")}>
+                  FAILED
                 </Link>
+                {/* <Link color={textColorBrand} fontWeight='500' to='#sports'>
+                  Sports
+                </Link> */}
               </Flex>
             </Flex>
+            {loading &&  <Skeleton isLoaded={!loading} height="500px"><Spinner /></Skeleton>}
+    
             <SimpleGrid columns={{ base: 1, md: 3 }} gap='20px'>
-              <NFT
-                name='Abstract Colors'
-                author='By Esthera Jackson'
-                bidders={[
-                  Avatar1,
-                  Avatar2,
-                  Avatar3,
-                  Avatar4,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                ]}
-                image={Nft1}
-                currentbid='0.91 ETH'
-                download='#'
-              />
-              <NFT
-                name='ETH AI Brain'
-                author='By Nick Wilson'
-                bidders={[
-                  Avatar1,
-                  Avatar2,
-                  Avatar3,
-                  Avatar4,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                ]}
-                image={Nft2}
-                currentbid='0.91 ETH'
-                download='#'
-              />
-              <NFT
-                name='Mesh Gradients '
-                author='By Will Smith'
-                bidders={[
-                  Avatar1,
-                  Avatar2,
-                  Avatar3,
-                  Avatar4,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                ]}
-                image={Nft3}
-                currentbid='0.91 ETH'
-                download='#'
-              />
-              <NFT
-                name='Mesh Gradients '
-                author='By Will Smith'
-                bidders={[
-                  Avatar1,
-                  Avatar2,
-                  Avatar3,
-                  Avatar4,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                ]}
-                image={Nft3}
-                currentbid='0.91 ETH'
-                download='#'
-              />
+              {
+                orders.map((order) =>{
+                  return (
+                    <Order
+                      {...order}
+                  />
+                  )
+                })
+              }
             </SimpleGrid>
           </Flex>
         </Flex>
