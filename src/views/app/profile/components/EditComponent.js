@@ -39,6 +39,7 @@ export default function EditForm(props) {
             ms={{ base: "0px", md: "0px" }}
             type="text"
             placeholder={title}
+            onChange={(e)=> onChange(title, e.target.value)}
             mb="24px"
             fontWeight="500"
             size="lg"

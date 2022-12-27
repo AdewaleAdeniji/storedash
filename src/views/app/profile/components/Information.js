@@ -15,7 +15,7 @@ export default function Information(props) {
   const textColorSecondary = "gray.400";
   const bg = useColorModeValue("white", "navy.700");
   let newValue = '';
-  if(title.indexOf('createdAt')>1||title.indexOf('updatedAt')>1){
+  if(title.indexOf('createdAt')> -1||title.indexOf('updatedAt')> -1){
     newValue = formatDate(value); 
   }
   if(title.indexOf('price')> -1){

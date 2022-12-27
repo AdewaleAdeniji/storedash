@@ -33,7 +33,6 @@ import { mapToArray } from "utils";
     delete newProduct.__v;
 
     const prod = mapToArray(newProduct);
-    console.log(prod);
     return (
       <Card mb={{ base: "0px", lg: "20px" }} align="center">
                 

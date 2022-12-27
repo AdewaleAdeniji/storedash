@@ -55,9 +55,9 @@ export default function ProductEditBanner(props) {
               bgSize="cover"
               borderColor={borderColor}
             >
-              <Button mt={"90%"} colorScheme="red">
+              {/* <Button mt={"90%"} colorScheme="red">
                 Remove Image
-              </Button>
+              </Button> */}
             </Box>
           );
         })}
