@@ -5,6 +5,7 @@ import {
   useColorModeValue,
   Button,
   Flex,
+  Select,
 } from "@chakra-ui/react";
 import Card from "components/card/Card.js";
 import React from "react";
@@ -51,6 +52,7 @@ export default function ProductEditBanner(props) {
     }
   }
   const onValueChange = (field, value) => {
+    console.log(field, value);
     var newValue;
     if(field === 'price' || field === 'stockCount'){
       newValue = parseInt(value);
@@ -131,6 +133,19 @@ export default function ProductEditBanner(props) {
             <EditInformation boxShadow={cardShadow} title={editable} value={data[editable]} onChange={onValueChange}/>
           );
         })}
+        <Select
+          variant="filled"
+          placeholder="Product Availability"
+          w={"300px"}
+          onChange={(e) => onValueChange('isAvailable', e.target.value === "yes" ? true : false)}
+        >
+              <option value={'yes'}>
+                Yes
+              </option>
+              <option value={'no'}>
+                No
+              </option>
+        </Select>
         <ToggleForm boxShadow={cardShadow} label={'Product Availability'} value={data?.isAvailable} onChange={onValueChange}/>
       </SimpleGrid>
     </Card>
