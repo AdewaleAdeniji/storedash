@@ -18,7 +18,7 @@ import { OrderBadge } from "components/badge";
   import { Link as RLink } from 'react-router-dom';
 
   export default function Order(props) {
-    const { name, description, images, status, paymentStatus, orderID } = props;
+    const { name, description, images, status, paymentStatus, orderItemID } = props;
     const textColor = useColorModeValue("navy.700", "white");
     const textColorBid = useColorModeValue("brand.500", "white");
     return (
@@ -126,7 +126,7 @@ import { OrderBadge } from "components/badge";
               <Text fontWeight='700' fontSize='sm' color={textColorBid}>
                 Payment Status: <OrderBadge status={paymentStatus}/>
               </Text>
-              <RLink to={{ pathname : `/app/order/${orderID}`, query: props}} params={props}>
+              <RLink to={{ pathname : `/app/order/${orderItemID}`, query: props}} params={props}>
               <Link
                 mt={{
                   base: "0px",

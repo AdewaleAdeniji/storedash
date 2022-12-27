@@ -11,7 +11,7 @@ import {
   Skeleton,
   Spinner,
 } from "@chakra-ui/react";
-import Order from "components/card/Order";
+import Order from "components/card/OrderCard";
 import { axios, toast, configs, Cache } from "utils/imports";
 import { useEffect, useState } from "react";
 
@@ -30,7 +30,7 @@ export default function Orders() {
     setOrders([]);
     setLoading(true);
     const orders = await axios.get(
-      `${configs.api_url}/commerce/orderItems?_sort=createdAt:-1${
+      `${configs.api_url}/commerce/orders?_sort=createdAt:-1${
         param ? param : ""
       }`,
       config
@@ -45,9 +45,9 @@ export default function Orders() {
     fetchorders();
   }, []);
   const handleFilter = (param) => {
-    return fetchorders(`&status=${param.toUpperCase()}`);
+    return fetchorders(`&paymentStatus=${param.toUpperCase()}`);
   };
-  
+  const paymentStatuses = "PENDING,FAILED,INCOMPLETE,COMPLETED".split(",");
   return (
     <Box pt={{ base: "180px", md: "80px", xl: "80px" }}>
       <Flex
@@ -78,50 +78,19 @@ export default function Orders() {
               >
                 Filters:
               </Link>
-              <Link
-                color={textColorBrand}
-                fontWeight="500"
-                mr={"10px"}
-                me={{ base: "34px", md: "44px" }}
-                onClick={() => handleFilter("completed")}
-              >
-                COMPLETED
-              </Link>
-              <Link
-                color={textColorBrand}
-                fontWeight="500"
-                me={{ base: "34px", md: "44px" }}
-                onClick={() => handleFilter("processing")}
-              >
-                PROCESSING
-              </Link>
-              <Link
-                color={textColorBrand}
-                fontWeight="500"
-                me={{ base: "34px", md: "44px" }}
-                onClick={() => handleFilter("incomplete")}
-              >
-                INCOMPLETE
-              </Link>
-              <Link
-                color={textColorBrand}
-                fontWeight="500"
-                me={{ base: "34px", md: "44px" }}
-                onClick={() => handleFilter("cancelled")}
-              >
-                CANCELLED
-              </Link>
-              <Link
-                color={textColorBrand}
-                fontWeight="500"
-                me={{ base: "34px", md: "44px" }}
-                onClick={() => handleFilter("failed")}
-              >
-                FAILED
-              </Link>
-              {/* <Link color={textColorBrand} fontWeight='500' to='#sports'>
-                  Sports
-                </Link> */}
+              {paymentStatuses.map((status) => {
+                return (
+                  <Link
+                    color={textColorBrand}
+                    fontWeight="500"
+                    mr={"10px"}
+                    me={{ base: "34px", md: "44px" }}
+                    onClick={() => handleFilter(status)}
+                  >
+                    {status}
+                  </Link>
+                );
+              })}
             </Flex>
           </Flex>
           {loading && (

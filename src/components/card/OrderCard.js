@@ -6,31 +6,28 @@ import {
     Button,
     Flex,
     Image,
-    Link as RLink,
+    Link,
     Text,
     useColorModeValue,
     Badge,
   } from "@chakra-ui/react";
+import { OrderBadge } from "components/badge";
   // Custom components
   import Card from "components/card/Card.js";
   // Assets
   import React from "react";
-  import { Link } from 'react-router-dom';
-
-  export default function Product(props) {
-    const { name, description, images, stockCount, hasStockCount, price, isAvailable, productID } = props;
+  import { Link as RLink } from 'react-router-dom';
+import { formatDate } from "utils";
+    import { formatMoney } from "utils";
+  export default function OrderCard(props) {
+    const { paymentStatus, paymentMode, cost, address, createdAt, items, orderID } = props;
     const textColor = useColorModeValue("navy.700", "white");
     const textColorBid = useColorModeValue("brand.500", "white");
+    
     return (
       <Card p='20px'>
         <Flex direction={{ base: "column" }} justify='center'>
           <Box mb={{ base: "20px", "2xl": "20px" }} position='relative'>
-            <Image
-              src={images.length > 0 ? images[0].url : 'https://via.placeholder.com/150'}
-              w={{ base: "200px", "3xl": "200px" }}
-              h={{ base: "300px", "3xl": "200px" }}
-              borderRadius='20px'
-            />
           </Box>
           <Flex flexDirection='column' justify='space-between' h='100%'>
             <Flex
@@ -57,7 +54,7 @@ import {
                   mb='5px'
                   fontWeight='bold'
                   me='14px'>
-                  {name}
+                  &#8358;{formatMoney(cost)}
                 </Text>
                 <Text
                   color='secondaryGray.600'
@@ -66,25 +63,18 @@ import {
                   }}
                   fontWeight='400'
                   me='14px'>
-                  {description}
+                  {address}
+                </Text>
+                <Text
+                  color='secondaryGray.600'
+                  fontSize={{
+                    base: "sm",
+                  }}
+                  fontWeight='400'
+                  me='14px'>
+                  {formatDate(createdAt)}
                 </Text>
               </Flex>
-              <AvatarGroup
-                max={3}
-                color={textColorBid}
-                size='sm'
-                mt={{
-                  base: "0px",
-                  md: "10px",
-                  lg: "0px",
-                  xl: "10px",
-                  "2xl": "0px",
-                }}
-                fontSize='12px'>
-                {images.map((avt, key) => (
-                  <Avatar key={key} src={avt.url} />
-                ))}
-              </AvatarGroup>
             </Flex>
             <Flex
               align='start'
@@ -96,18 +86,19 @@ import {
                 xl: "column",
                 "2xl": "row",
               }}
-              mt='25px'>
-              { hasStockCount && <Text fontWeight='700' fontSize='sm' color={textColorBid}>
-                Stock Count:  <Badge colorScheme={stockCount < 10 ? 'red' : 'green'}></Badge>
-              </Text>}
-              <Text fontWeight='700' fontSize='sm' color={textColorBid} mt={'5px'}>
-                {!isAvailable && 'Not '} Available
+              mt='20px'>
+            <Text fontWeight='700' fontSize='sm' color={textColorBid} mb={'3px'}>
+                Total items:  <Badge>{items}</Badge>
               </Text>
-              <Text fontWeight='700' fontSize='sm' color={textColorBid} mt={'5px'}>
-                    Price : &#8358;{price}
+              <Text fontWeight='700' fontSize='sm' color={textColorBid} mb={'3px'}>
+                Payment Mode:  <Badge>{paymentMode}</Badge>
               </Text>
-              <Link to={{ pathname : `/app/product/${productID}`, query: props}} params={props}>
-              <RLink
+              <Text fontWeight='700' fontSize='sm' color={textColorBid}>
+                Payment Status: <OrderBadge status={paymentStatus}/>
+              </Text>
+              <Flex align={'right'} justifyContent={'right'} w={'100%'}>
+              <RLink to={{ pathname : `/app/order/${orderID}`, query: props}} params={props}>
+              <Link
                 mt={{
                   base: "0px",
                   md: "10px",
@@ -125,8 +116,9 @@ import {
                   py='5px'>
                   View
                 </Button>
-              </RLink>
               </Link>
+              </RLink>
+              </Flex>
             </Flex>
           </Flex>
         </Flex>

@@ -23,10 +23,6 @@ export default function ProductDetails(props) {
         gap={{ base: "20px", xl: "20px" }}>
         
         <Banner
-        //   gridArea='1 / 2 / 2 / 2'
-        //   banner={banner}
-        //   avatar={'https://res.cloudinary.com/hdlky7wud/image/upload/c_crop,g_face/c_scale,w_200/gt5mytr6vql8fo77gbrq.jpg'}
-        //   username='@Username'
           {...query}
         />
       </Grid>
