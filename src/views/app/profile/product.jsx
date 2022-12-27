@@ -14,6 +14,7 @@ export default function ProductDetails(props) {
     const { query } = useLocation();
     if(!query){
        goToURL(props, '/app/products');
+       return <></>;
     }
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
