@@ -9,6 +9,7 @@ import {
 // Custom components
 import Card from "components/card/Card.js";
 import React from "react";
+import { splitCamelCaseToString } from "utils";
 
 export default function EditForm(props) {
   const { title, value, onChange, ...rest } = props;
@@ -16,7 +17,6 @@ export default function EditForm(props) {
   const textColorPrimary = useColorModeValue("secondaryGray.900", "white");
   const bg = useColorModeValue("white", "navy.700");
   const textColor = useColorModeValue("navy.700", "white");
-    console.log(title, value);
   return (
     <Card bg={bg} {...rest}>
       <Box>
@@ -29,7 +29,7 @@ export default function EditForm(props) {
             color={textColor}
             mb="8px"
           >
-            {title}
+            {splitCamelCaseToString(title)}
           </FormLabel>
           <Input
             isRequired={true}

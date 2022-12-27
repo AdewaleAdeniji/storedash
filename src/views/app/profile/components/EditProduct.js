@@ -14,9 +14,16 @@ import axios from "axios";
 import configs from "utils/configs";
 import Cache from "utils/cache";
 import ToggleForm from "./ToggleForm";
+import Upload from "./Upload";
+import { toast } from "utils/imports";
 
 export default function ProductEditBanner(props) {
   const { editables, data, edit } = props;
+  const [payload, setPayload] = React.useState({});
+  const { _id } = data;
+  const config = {
+    headers: { Authorization: `Bearer ${Cache.getToken()}` },
+  };
   // Chakra Color Mode
   const borderColor = useColorModeValue(
     "white !important",
@@ -28,20 +35,69 @@ export default function ProductEditBanner(props) {
   );
   const newProduct = { ...data };
   //   const ImageToDisplay  = [...newProduct.images]
-  const onImageUploaded = async (file) => {
-      const config = {
-        headers: { Authorization: `Bearer ${Cache.getToken()}` },
-        "content-type": 'multipart/form-data'
-    };
-    // const imgs = newProduct.images;
-    const formData = new FormData();
-    formData.append('file',file[0])
-    // imgs.push(file);
-   const res = await axios.post(configs.api_url+'/uploads', formData, config);
-   console.log(res);
+  const onImageUploaded = async (files) => {
+    if (files.length === 1) {
+      var file = files[0];
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        //setImageURL(reader.result);
+      };
+      toast.loading("Uploading File...");
+
+      uploadFile(file);
+    } else {
+      toast.warning("Please select an image");
+    }
   }
   const onValueChange = (field, value) => {
-    console.log(field, value);
+    var newValue;
+    if(field === 'price' || field === 'stockCount'){
+      newValue = parseInt(value);
+    }
+      let t = { ...payload};
+      t[field] = newValue || value;
+    setPayload({...t});
+  }
+  function uploadFile(file) {
+    const config = {
+      headers: { "X-Requested-With": "XMLHttpRequest" }
+    };
+    //add cloudinary url
+    const url = "https://api.cloudinary.com/v1_1/hdlky7wud/upload/";
+    const data = new FormData();
+    data.append("upload_preset", "phalconwise_users"); //append cloudinary specific config
+    data.append("file", file);
+    axios
+      .post(url, data, config)
+      .then((res) => {
+        toast.dismiss();
+        if (res.data) {
+          console.log(res.data);
+          const imageurl = res.data.url;
+          console.log(imageurl);
+        }
+      })
+      .catch((err) => {
+        toast.dismiss();
+        toast.error("Image Upload failed");
+      });
+  }
+  const saveProduct = async () => {
+      toast.loading("Updating order.......");
+    try {
+      await axios.put(
+        `${configs.api_url}/commerce/products/${_id}`,
+        payload,
+       config
+      );
+      toast.dismiss();
+      toast.success("Order updated successfully");
+
+    } catch (err) {
+      toast.dismiss();
+      toast.error("Order could not be updated!");
+    }
   }
   return (
     <Card mb={{ base: "0px", lg: "20px" }} align="center">
@@ -67,12 +123,12 @@ export default function ProductEditBanner(props) {
         /> */}
       </SimpleGrid>
       <Flex justifyContent='right' mt={'20px'}>
-            <Button colorScheme={'brand'}>{edit ? 'Save' : 'Create'} Product</Button>
+            <Button colorScheme={'brand'} onClick={saveProduct}>{edit ? 'Save' : 'Create'} Product</Button>
         </Flex>
       <SimpleGrid columns="2" gap="20px">
         {editables.map((editable) => {
           return (
-            <EditInformation boxShadow={cardShadow} title={splitCamelCaseToString(editable)} value={data[editable]} onChange={onValueChange}/>
+            <EditInformation boxShadow={cardShadow} title={editable} value={data[editable]} onChange={onValueChange}/>
           );
         })}
         <ToggleForm boxShadow={cardShadow} label={'Product Availability'} value={data?.isAvailable} onChange={onValueChange}/>
