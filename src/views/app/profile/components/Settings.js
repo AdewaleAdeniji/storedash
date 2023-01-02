@@ -9,8 +9,8 @@ export default function Settings(props) {
   const { ...rest } = props;
   // Chakra Color Mode
   const onSwitchChange = (e) => {
-    console.log(e.target.id);
-    console.log(e.target.value);
+    // console.log(e.target.id);
+    // console.log(e.target.value);
   }
   const textColorPrimary = useColorModeValue("secondaryGray.900", "white");
   return (

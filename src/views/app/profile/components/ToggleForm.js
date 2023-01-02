@@ -4,11 +4,10 @@ import {
   Text,
   useColorModeValue,
   FormLabel,
-  Input,
 } from "@chakra-ui/react";
 // Custom components
 import Card from "components/card/Card.js";
-import React, { useState } from "react";
+import React from "react";
 import SwitchField from "components/fields/SwitchField";
 
 export default function ToggleForm(props) {
@@ -19,8 +18,8 @@ export default function ToggleForm(props) {
   const textColor = useColorModeValue("navy.700", "white");
  //const [checked] = useState(false)
   const onSwitchChange = (e) => {
-    console.log(e.target.id);
-    console.log(e.target.value);
+    // console.log(e.target.id);
+    // console.log(e.target.value);
   };
 
   return (

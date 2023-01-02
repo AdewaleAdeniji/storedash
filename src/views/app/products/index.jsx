@@ -15,8 +15,9 @@ import {
 import Product from "components/card/Product";
 import { axios, toast, configs,Cache } from "utils/imports";
 import { useEffect, useState } from "react";
+import { goToURL } from "utils";
 
-export default function Products() {
+export default function Products(props) {
   // Chakra Color Mode
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const [products, setProducts] = useState([]);
@@ -31,7 +32,6 @@ export default function Products() {
   setLoading(true);
   const prods = await axios.get(`${configs.api_url}/commerce/products?_sort=createdAt:-1${param?param:''}`, config)
   setLoading(false);
-  console.log(prods.data);
   setProducts(prods.data);
     if(prods.data.length === 0){
       toast.warning('No orders with the selected category');
@@ -60,7 +60,7 @@ export default function Products() {
                 me='20px'
                 ms={{ base: "24px", md: "0px" }}
                 mt={{ base: "20px", md: "0px" }}>
-                  <Button color={"white"} variant="brand">
+                  <Button color={"white"} variant="brand" onClick={()=> goToURL(props, '/app/create/product')}>
                     Create new Product
                   </Button>
               </Flex>

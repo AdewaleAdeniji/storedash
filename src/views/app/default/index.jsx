@@ -16,7 +16,7 @@ import {
   orderTableColumns,
 } from "views/app/dataTables/variables/columnsData";
 import ColumnsTable from "views/app/dataTables/components/OrdersTable";
-import { axios, toast, configs,Cache, moment } from "utils/imports";
+import { axios, configs,Cache, moment } from "utils/imports";
 import { useEffect } from "react";
 
 export default function UserReports() {
@@ -58,7 +58,6 @@ export default function UserReports() {
     var result = Object.keys(obj).map((key) => [(key), obj[key]]);
     setStats(result);
     setOrders(orders.slice(0,10));
-    console.log(orders.slice(0,10))
   }
 
   return (
