@@ -9,7 +9,7 @@ function Dropzone(props) {
   const onDrop = useCallback(acceptedFiles => {
     // Do something with the files
     onUpload(acceptedFiles);
-    console.log('uploaded');
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   const { getRootProps, getInputProps } = useDropzone({ onDrop});
   const bg = useColorModeValue("gray.100", "navy.700");

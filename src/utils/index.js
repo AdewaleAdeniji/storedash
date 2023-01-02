@@ -1,7 +1,6 @@
 import React from "react";
 import copy from 'copy-to-clipboard';
 import { toast } from 'react-toastify';
-import filter from 'leo-profanity';
 import banks from './banks.json';
 import moment from 'moment';
 
@@ -114,27 +113,6 @@ class Utils {
       }
     };
   
-    static sendSlackMessage(body) {
-      var myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/json");
-  
-      var raw = JSON.stringify({
-        to: "reports",
-        message: body,
-      });
-  
-      var requestOptions = {
-        method: "POST",
-        headers: myHeaders,
-        body: raw,
-        redirect: "follow",
-      };
-  
-      fetch("https://doedoh-message.herokuapp.com/v1/send-slack", requestOptions)
-        .then((response) => response.text())
-        .then((result) => console.log(result))
-        .catch((error) => console.log("error", error));
-    }
   }
   
   export default Utils;

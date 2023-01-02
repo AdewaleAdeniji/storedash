@@ -18,6 +18,7 @@ import Products from "views/app/products";
 import ProductDetails from "views/app/profile/product";
 import OrderDetails from "views/app/profile/order";
 import EditProduct from "views/app/profile/EditProduct";
+import CreateProduct from "views/app/profile/components/CreateProduct";
 
 const authRoutes = [
   {
@@ -94,6 +95,16 @@ const routes = [
     path: "/order/:id",
     icon: <Icon as={MdPerson} width='20px' height='20px' color='inherit' />,
     component: OrderDetails,
+    navbar: false,
+    protected: true,
+    secondary: true,
+  },
+  {
+    name: "Create Product",
+    layout: "/app",
+    path: "/create/product",
+    icon: <Icon as={MdPerson} width='20px' height='20px' color='inherit' />,
+    component: CreateProduct,
     navbar: false,
     protected: true,
     secondary: true,
