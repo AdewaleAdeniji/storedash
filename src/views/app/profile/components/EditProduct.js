@@ -110,6 +110,23 @@ export default function ProductEditBanner(props) {
       toast.error("Product could not be updated!");
     }
   };
+  const deleteProduct = async () => {
+    toast.loading("Product order.......");
+    try {
+      await axios.put(
+        `${configs.api_url}/commerce/products/${_id}`,
+        {
+          deleted: true
+        },
+        config
+      );
+      toast.dismiss();
+      toast.success("Product deleted successfully");
+    } catch (err) {
+      toast.dismiss();
+      toast.error("Product could not be deleted!");
+    }
+  };
   return (
     <Card mb={{ base: "0px", lg: "20px" }} align="center">
       <SimpleGrid columns={{ base: 1, md: 3 }} gap="5px" w={"fit-content"}>
@@ -134,6 +151,10 @@ export default function ProductEditBanner(props) {
         />
       </SimpleGrid>
       <Flex justifyContent="right" mt={"20px"}>
+      <Button colorScheme={"brand"} onClick={deleteProduct}>
+          Delete Product
+        </Button>
+        &nbsp;&nbsp;
         <Button colorScheme={"brand"} onClick={saveProduct}>
           {edit ? "Save" : "Create"} Product
         </Button>
