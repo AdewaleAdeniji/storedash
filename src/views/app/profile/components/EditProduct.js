@@ -154,6 +154,7 @@ export default function ProductEditBanner(props) {
       <Button colorScheme={"brand"} onClick={deleteProduct}>
           Delete Product
         </Button>
+        &nbsp;&nbsp;
         <Button colorScheme={"brand"} onClick={saveProduct}>
           {edit ? "Save" : "Create"} Product
         </Button>
